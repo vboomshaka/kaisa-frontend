@@ -19,7 +19,7 @@
     <div class="front-view flex flex-col">
       <div class="text-text flex-1">
         <div class="front-header flex items-baseline py-md px-xl">
-          <router-link to="/home" class="text-xxl text-text hover:text-text">
+          <router-link to="/" class="text-xxl text-text hover:text-text">
             <img src="@/assets/vite.svg" />
             Stepin
           </router-link>
