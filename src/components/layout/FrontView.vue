@@ -1,17 +1,8 @@
 <script lang="ts" setup>
-  import { LogoutOutlined } from '@ant-design/icons-vue';
-  import { onMounted } from 'vue';
-  import { ThemeProvider, alert } from 'stepin';
+import { LogoutOutlined } from '@ant-design/icons-vue';
+import { onMounted } from 'vue';
+import { ThemeProvider, alert } from 'stepin';
 
-  // onMounted(() => {
-  //   alert.info(
-  //     `<div class="text-text">
-  //       Stepin is a fast, light framework to Vue3 – try it out today with the
-  //       <span class="underline">Stepin Template Beta</span>.
-  //     </div>`,
-  //     { renderRaw: true, duration: -1 }
-  //   );
-  // });
 
 </script>
 <template>
@@ -24,18 +15,9 @@
             Stepin
           </router-link>
           <div
-            style="width: calc(100% - 430px)"
-            class="front-navigation mx-xl flex overflow-hidden items-center text-lg overflow-ellipsis whitespace-nowrap"
+              style="width: calc(100% - 430px)"
+              class="front-navigation mx-xl flex overflow-hidden items-center text-lg overflow-ellipsis whitespace-nowrap"
           >
-          </div>
-          <div>
-  <!--            <router-link-->
-  <!--              to="/login"-->
-  <!--              class="h-[46px] border-transparent hover:text-text hover:border-transparent text-lg text-text"-->
-  <!--            >-->
-  <!--              <LogoutOutlined class="mr-xs" />-->
-  <!--              Sign In-->
-  <!--            </router-link>-->
           </div>
         </div>
         <div class="front-content px-xl">
@@ -46,24 +28,24 @@
   </ThemeProvider>
 </template>
 <style lang="less" scoped>
-  .front-view {
-    .front-header {
-      .front-nav-item {
-        &.with-list .front-nav-item-content {
+.front-view {
+  .front-header {
+    .front-nav-item {
+      &.with-list .front-nav-item-content {
+        &:after {
+          content: '';
+        @apply ~"h-[8px]" ~"w-[8px]" transition-transform ml-2 inline-block border-text border-l-0 border-t-0 border-r-2 border-b-2 border-solid ~"rotate-[-135deg]" translate-y-1/4;
+        }
+        &:hover {
           &:after {
-            content: '';
-            @apply ~"h-[8px]" ~"w-[8px]" transition-transform ml-2 inline-block border-text border-l-0 border-t-0 border-r-2 border-b-2 border-solid ~"rotate-[-135deg]" translate-y-1/4;
-          }
-          &:hover {
-            &:after {
-              @apply ~"rotate-[45deg]" translate-y-0;
-            }
+          @apply ~"rotate-[45deg]" translate-y-0;
           }
         }
       }
     }
-    .front-content {
-      min-height: calc(100vh - 78px);
-    }
   }
+  .front-content {
+    min-height: calc(100vh - 78px);
+  }
+}
 </style>

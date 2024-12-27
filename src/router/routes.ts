@@ -1,28 +1,10 @@
-import {RouteRecordRaw} from 'vue-router';
-import {useAccountStore} from "@/store";
+import { RouteRecordRaw } from 'vue-router';
 
 const routes: RouteRecordRaw[] = [
-    // {
-    //   path: '/',
-    //   name: 'home',
-    //   redirect: '/home',
-    //   meta: {
-    //     title: '首页',
-    //     renderMenu: false,
-    //     icon: 'CreditCardOutlined',
-    //   },
-    // },
     {
         path: '/',
-        name: '',
-        redirect: (to) => {
-            const authStore = useAccountStore();
-            if (authStore.logged) {
-                return {path: '/workplace'};
-            } else {
-                return {path: '/login'};
-            }
-        },
+        name: 'home',
+        redirect: '/login',
         meta: {
             title: '首页',
             renderMenu: false,
@@ -48,6 +30,14 @@ const routes: RouteRecordRaw[] = [
                 },
                 component: () => import('@/pages/login'),
             },
+            // {
+            //   path: '/home',
+            //   name: '首页',
+            //   meta: {
+            //     view: 'blank',
+            //   },
+            //   component: () => import('@/pages/home'),
+            // },
         ],
     },
     {

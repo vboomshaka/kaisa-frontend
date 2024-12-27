@@ -20,9 +20,9 @@ const loginGuard: NavigationGuard = function (to, from) {
         return '/login';
         // account.setLogged(false);
     } else if (http.checkAuthorization() && to.fullPath === '/login') {
-        return '/';
-    }
-};
+        // 如果用户已授权并且访问的路径是 /login
+        return '/workplace'; // 重定向到根路径 /
+    }};
 // 进度条
 const ProgressGuard: NaviGuard = {
     before(to, from) {
