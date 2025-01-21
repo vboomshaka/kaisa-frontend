@@ -120,10 +120,12 @@ export const useMenuStore = defineStore('menu', () => {
     const { setPageLoading } = useLoadingStore();
     setPageLoading(true);
     return http
-      .request<MenuProps[], Response<MenuProps[]>>('/menu', 'GET')
+      .request<MenuProps[], Response<MenuProps[]>>('/api/getMenus', 'GET')
       .then((res) => {
         const { data } = res;
+
         menuList.value = data;
+        console.log(menuList.value);
         replaceRoutes(toRoutes(data), false);
         checkMenuPermission();
         return data;

@@ -25,7 +25,21 @@ export const useAuthStore = defineStore<string, AuthState, {}, AuthActions>('aut
       this.authorities = authorities;
     },
     hasAuthority(authority) {
-      return this.authorities.indexOf(authority) !== -1;
+      console.log(this.authorities, authority);
+
+      // 如果 authority 直接存在于 authorities 列表中，则返回 true
+      // if (this.authorities.indexOf(authority) !== -1) {
+      //   return true;
+      // }
+      // 遍历 authorities 列表，对每个值以 : 分割后进行匹配
+      for (let i = 0; i < this.authorities.length; i++) {
+        if (this.authorities[i].split(':').indexOf(authority) !== -1) {
+          return true;
+        }
+      }
+
+      // 如果没有匹配上，返回 false
+      return false;
     },
     /**
      * 给函数添加 权限校验

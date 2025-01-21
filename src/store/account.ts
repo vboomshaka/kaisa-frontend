@@ -34,10 +34,11 @@ export const useAccountStore = defineStore('account', {
       return http
         .request<TokenResult, Response<TokenResult>>('/login', 'post_json', { username, password })
         .then(async (response) => {
-          if (response.code === 0) {
+          if (response.code === 200) {
             this.logged = true;
             http.setAuthorization(`Bearer ${response.data.token}`, new Date(response.data.expires));
             await useMenuStore().getMenuList();
+            console.log('login success', response.data);
             return response.data;
           } else {
             return Promise.reject(response);
@@ -56,11 +57,12 @@ export const useAccountStore = defineStore('account', {
       const { setAuthLoading } = useLoadingStore();
       setAuthLoading(true);
       return http
-        .request<Account, Response<Profile>>('/account', 'get')
+        .request<Account, Response<Profile>>('/api/account', 'get')
         .then((response) => {
-          if (response.code === 0) {
+          if (response.code === 200) {
             const { setAuthorities } = useAuthStore();
             const { account, permissions, role } = response.data;
+            console.log('profile', permissions);
             this.account = account;
             this.permissions = permissions;
             this.role = role;

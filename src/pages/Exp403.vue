@@ -12,11 +12,11 @@
         </template>
       </a-result>
     </div>
-    <div>
-      need permission:
-      <a-tag color="blue">{{ permission }}</a-tag>
-    </div>
-    <a-button @click="updatePermission">更新权限</a-button>
+<!--    <div>-->
+<!--      need permission:-->
+<!--      <a-tag color="blue">{{ permission }}</a-tag>-->
+<!--    </div>-->
+<!--    <a-button @click="updatePermission">更新权限</a-button>-->
   </div>
 </template>
 <script lang="ts" setup>
@@ -45,7 +45,7 @@ function toHome() {
 }
 
 function updatePermission() {
-  authStore.setAuthorities(['edit1']);
+  authStore.setAuthorities(['admin']);
 }
 
 if (props.loading) {

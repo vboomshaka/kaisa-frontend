@@ -121,20 +121,6 @@ const presetList = [
     permission: null,
     cacheable: true,
   },
-  // {
-  //   id: 10,
-  //   name: 'github',
-  //   title: 'Github',
-  //   icon: 'GithubOutlined',
-  //   badge: 'link',
-  //   target: '_blank',
-  //   path: '/github',
-  //   component: 'link',
-  //   renderMenu: true,
-  //   parent: null,
-  //   cacheable: true,
-  //   link: 'https://github.com/stepui/stepin-template',
-  // },
 ];
 
 function getMenuList() {
@@ -163,7 +149,7 @@ function saveMenu(menu) {
   localStorage.setItem('stepin-menu', JSON.stringify(menuList));
 }
 
-Mock.mock('api/menu', 'get', ({}) => {
+Mock.mock('/menu', 'get', ({}) => {
   let menuList = getMenuList();
   const menuMap = menuList.reduce((p, c) => {
     p[c.name] = c;

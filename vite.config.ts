@@ -33,7 +33,7 @@ export default ({ command, mode }) => {
       port: 3000,
       proxy: {
         '/api': {
-          target: env.VITE_API_URL,
+          target: env.VITE_wAPI_URL,
           ws: true,
           changeOrigin: true,
           rewrite: (path) => path.replace(/^\/api/, ''),
