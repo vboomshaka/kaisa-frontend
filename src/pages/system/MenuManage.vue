@@ -87,17 +87,39 @@ const columns = [
   },
 ];
 
-const treeData = computed(() => {
-  const toNode = (list: MenuProps[]): TreeSelectProps['treeData'] => {
-    return list.map((item) => ({
-      title: item.title!,
-      value: item.name! as string,
-      children: item.children && toNode(item.children!),
-    }));
-  };
+// 将菜单列表转换为树形结构
+const convertToTree = (list: MenuProps[]): TreeSelectProps['treeData'] => {
+  const map = new Map<number, MenuProps & { children?: MenuProps[] }>();
+  const tree: (MenuProps & { children?: MenuProps[] })[] = [];
 
-  return toNode(menuList.value);
+  // 创建一个 map，以 id 为键存储菜单项
+  list.forEach(item => {
+    map.set(item.id!, {...item});
+  });
+
+  // 遍历菜单项，根据 parentId 构建树形结构
+  list.forEach(item => {
+    if (item.parentId !== null && map.has(item.parentId)) {
+      const parent = map.get(item.parentId)!;
+      if (!parent.children) {
+        parent.children = [];
+      }
+      parent.children.push(map.get(item.id!)!);
+    } else {
+      tree.push(map.get(item.id!)!);
+    }
+  });
+
+  return tree.map(item => toNode(item));
+};
+
+const toNode = (item: MenuProps & { children?: MenuProps[] }): TreeSelectProps['treeData'][number] => ({
+  title: item.title!,
+  value: item.id!,
+  children: item.children ? item.children.map(child => toNode(child)) : undefined,
 });
+
+const treeData = computed(() => convertToTree(menuList.value));
 
 const showForm = ref(false);
 
@@ -111,7 +133,7 @@ const formData = reactive<MenuProps>({
   path: '',
   component: '',
   renderMenu: true,
-  parent: undefined,
+  parentId: null,
   permission: undefined,
   cacheable: true,
 });
@@ -120,17 +142,17 @@ const editPath = false;
 const pathInput = ref();
 
 watch(
-    () => formData.parent,
+    () => formData.parentId,
     (val) => {
       if (!val) {
         return;
       }
-      const findMenu = (name: string, list: MenuProps[]): MenuProps | undefined => {
+      const findMenu = (id: number, list: MenuProps[]): MenuProps | undefined => {
         for (const menu of list) {
-          if (menu.name === name) {
+          if (menu.id === id) {
             return menu;
           } else if (menu.children) {
-            const _menu = findMenu(name, menu.children);
+            const _menu = findMenu(id, menu.children);
             if (_menu) {
               return _menu;
             }
@@ -210,7 +232,7 @@ const edit = useAuth('edit', function (record: MenuProps) {
   formData.target = record.target;
   formData.renderMenu = record.renderMenu;
   formData.permission = record.permission;
-  formData.parent = record.parent;
+  formData.parentId = record.parentId;
   pageType.value =
       formData.component === 'LinkView' ? 'link' : formData.component === 'iframe' ? 'iframe' : 'component';
   showForm.value = true;
@@ -254,6 +276,7 @@ onMounted(() => {
   getMenuList();
 });
 </script>
+
 <template>
   <div class="authority">
     <a-table
@@ -300,11 +323,11 @@ onMounted(() => {
         <a-form-item required name="title" label="菜单标题">
           <a-input v-model:value="formData.title"/>
         </a-form-item>
-        <a-form-item name="parent" label="父级菜单">
+        <a-form-item name="parentId" label="父级菜单">
           <a-tree-select
               tree-default-expand-all
               placeholder="设置父级菜单"
-              v-model:value="formData.parent"
+              v-model:value="formData.parentId"
               :treeData="treeData"
           />
         </a-form-item>
@@ -361,3 +384,4 @@ onMounted(() => {
   justify-content: center; /* 居中对齐按钮 */
 }
 </style>
+

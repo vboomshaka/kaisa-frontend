@@ -28,7 +28,7 @@
           <a-input
               v-model:value="form.password"
               autocomplete="new-password"
-              placeholder="请输入登录密码: 888888"
+              placeholder="请输入登录密码: "
               class="login-input h-[40px]"
               type="password"
           />

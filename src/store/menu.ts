@@ -23,6 +23,7 @@ export interface MenuProps {
   renderMenu?: boolean;
   permission?: string;
   parent?: string;
+  parentId?: number;
   children?: MenuProps[];
   cacheable?: boolean;
   view?: string;
@@ -123,7 +124,6 @@ export const useMenuStore = defineStore('menu', () => {
       .request<MenuProps[], Response<MenuProps[]>>('/api/getMenus', 'GET')
       .then((res) => {
         const { data } = res;
-
         menuList.value = data;
         console.log(menuList.value);
         replaceRoutes(toRoutes(data), false);
@@ -135,7 +135,7 @@ export const useMenuStore = defineStore('menu', () => {
 
   async function addMenu(menu: MenuProps) {
     return http
-      .request<any, Response<any>>('/menu', 'POST_JSON', menu)
+      .request<any, Response<any>>('/api/addMenu', 'POST_JSON', menu)
       .then((res) => {
         return res.data;
       })
@@ -144,7 +144,7 @@ export const useMenuStore = defineStore('menu', () => {
 
   async function updateMenu(menu: MenuProps) {
     return http
-      .request<any, Response<any>>('/menu', 'PUT_JSON', menu)
+      .request<any, Response<any>>('/api/updateMenu', 'PUT_JSON', menu)
       .then((res) => {
         return res.data;
       })
@@ -153,7 +153,7 @@ export const useMenuStore = defineStore('menu', () => {
 
   async function removeMenu(id: number) {
     return http
-      .request<any, Response<any>>('/menu', 'DELETE', { id })
+      .request<any, Response<any>>(`/api/deleteMenu/${id}`, 'DELETE', { id })
       .then(async (res) => {
         if (res.code === 0) {
           removeRoute(res.data.name);
