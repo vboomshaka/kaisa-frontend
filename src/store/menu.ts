@@ -80,6 +80,9 @@ function resetMenuFilter(routes: Readonly<RouteRecordRaw[]>) {
 
 // 菜单数据转为路由数据
 const toRoutes = (list: MenuProps[]): RouteOption[] => {
+  if (!Array.isArray(list)) {
+    throw new TypeError('Expected an array but got something else.');
+  }
   return list.map((item) => ({
     name: item.name,
     path: item.path,
@@ -125,7 +128,6 @@ export const useMenuStore = defineStore('menu', () => {
       .then((res) => {
         const { data } = res;
         menuList.value = data;
-        console.log(menuList.value);
         replaceRoutes(toRoutes(data), false);
         checkMenuPermission();
         return data;
@@ -135,7 +137,7 @@ export const useMenuStore = defineStore('menu', () => {
 
   async function addMenu(menu: MenuProps) {
     return http
-      .request<any, Response<any>>('/api/addMenu', 'POST_JSON', menu)
+      .request<any, Response<any>>('/api/menu/add', 'POST_JSON', menu)
       .then((res) => {
         return res.data;
       })
@@ -144,7 +146,7 @@ export const useMenuStore = defineStore('menu', () => {
 
   async function updateMenu(menu: MenuProps) {
     return http
-      .request<any, Response<any>>('/api/updateMenu', 'PUT_JSON', menu)
+      .request<any, Response<any>>('/api/menu/update', 'PUT_JSON', menu)
       .then((res) => {
         return res.data;
       })
@@ -153,7 +155,7 @@ export const useMenuStore = defineStore('menu', () => {
 
   async function removeMenu(id: number) {
     return http
-      .request<any, Response<any>>(`/api/deleteMenu/${id}`, 'DELETE', { id })
+      .request<any, Response<any>>(`/api/menu/delete/${id}`, 'DELETE', { id })
       .then(async (res) => {
         if (res.code === 0) {
           removeRoute(res.data.name);

@@ -6,7 +6,6 @@ import {useAuthStore} from '@/plugins';
 import NProgress from 'nprogress';
 import {clearPage} from 'stepin/es/tabs-view';
 import 'nprogress/nprogress.css';
-import Cookie from "js-cookie";
 
 NProgress.configure({showSpinner: false});
 
@@ -18,7 +17,7 @@ interface NaviGuard {
 const loginGuard: NavigationGuard = function (to, from) {
     const account = useAccountStore();
     if (!http.checkAuthorization() && !/^\/(login)?$/.test(to.fullPath)) {
-        account.setLogged(false);
+        // account.setLogged(false);
         return '/login';
     } else if (http.checkAuthorization() && to.fullPath === '/login') {
         // 如果用户已授权并且访问的路径是 /login
