@@ -39,7 +39,7 @@ const props = defineProps({
 
 const emits = defineEmits(['change']);
 
-const handleChange = (paginationConfig: any) => {
-  emits('change', paginationConfig);
+const handleChange = (paginationConfig: any, filters: any, sorter: any) => {
+  emits('change', paginationConfig, filters, sorter);
 };
 </script>

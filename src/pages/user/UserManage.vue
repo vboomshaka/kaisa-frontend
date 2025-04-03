@@ -41,6 +41,9 @@
             </a-popconfirm>
           </div>
         </template>
+        <template v-else-if="column.dataIndex === 'login_time'">
+          {{ formatDateTime(text) }}
+        </template>
         <template v-else>
           {{ text }}
         </template>
@@ -152,7 +155,7 @@ const columns = [
   },
   {
     title: '最近登录时间',
-    dataIndex: 'loginTime',
+    dataIndex: 'login_time',
     align: 'center',
   },
   {
@@ -269,6 +272,17 @@ watch(() => formData.role, (newRole) => {
 onMounted(() => {
   fetchUsers();
 });
+
+const formatDateTime = (dateTime: string): string => {
+  const date = new Date(dateTime);
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+  const hours = String(date.getHours()).padStart(2, '0');
+  const minutes = String(date.getMinutes()).padStart(2, '0');
+  const seconds = String(date.getSeconds()).padStart(2, '0');
+  return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+}
 </script>
 
 <style scoped>
